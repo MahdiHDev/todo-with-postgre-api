@@ -9,7 +9,7 @@ const loginUser = async (email: string, password: string) => {
         email,
     ]);
 
-    console.log({ result });
+    // console.log({ result });
     if (result.rows.length === 0) {
         return null;
     }
@@ -17,7 +17,7 @@ const loginUser = async (email: string, password: string) => {
 
     const match = await bcrypt.compare(password, user.password);
 
-    console.log({ match, user });
+    // console.log({ match, user });
     if (!match) {
         return false;
     }
@@ -25,11 +25,15 @@ const loginUser = async (email: string, password: string) => {
     const token = jwt.sign(
         { name: user.name, email: user.email, role: user.role },
         config.jwtSecret as string,
-        { expiresIn: "7d" }
+        {
+            expiresIn: "7d",
+        }
     );
-    console.log({ token });
+    // console.log({ token });
 
     return { token, user };
 };
 
-export const authServices = { loginUser };
+export const authServices = {
+    loginUser,
+};
